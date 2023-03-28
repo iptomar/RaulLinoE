@@ -82,7 +82,7 @@ var onGPSSuccess = function (position) {
         /*L.marker([abrantesLat, abrantesLong]).addTo(map)
             .bindPopup('<strong> Centro Abrantes</strong>')
             .openPopup();*/
- }
+    }
 
     document.addEventListener("backbutton", onBackKeyDown, false);
 
@@ -116,7 +116,7 @@ var onGPSSuccess = function (position) {
         .then(json => {
             var i = 0;
             json.dados.forEach(element => {
-                L.marker([element.coordenadas[0], element.coordenadas[1]], {icon: greenIcon}).addTo(map)
+                L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
                     .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '</a>');
                 i++;
             });
@@ -151,6 +151,20 @@ function GPSDistance(lat1, lon1, lat2, lon2) {
 
     return d;
 
+}
+
+function ZoomIN() {
+    var zoomInButton = document.getElementById('zoom-in-button');
+    zoomInButton.addEventListener('click', function () {
+        map.setZoom(map.getZoom() + 1);
+    });
+}
+
+function ZoomOUT() {
+    var zoomOutButton = document.getElementById('zoom-out-button');
+    zoomOutButton.addEventListener('click', function () {
+        map.setZoom(map.getZoom() - 1);
+    });
 }
 
 carrega_pagina = (id) => {
