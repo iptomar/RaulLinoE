@@ -47,7 +47,7 @@ function onBackKeyDown() {
 }
 
 var onGPSSuccess = function (position) {
-    /* alert('Latitude: '          + position.coords.latitude          + '\n' +
+    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
            'Longitude: '         + position.coords.longitude         + '\n' +
            'Altitude: '          + position.coords.altitude          + '\n' +
            'Accuracy: '          + position.coords.accuracy          + '\n' +
@@ -122,6 +122,8 @@ var onGPSSuccess = function (position) {
             });
         });
 
+        getLocation();
+
 
     // centra o map
     map.setView(new L.LatLng([abrantesLat, abrantesLong]), 5);
@@ -134,6 +136,17 @@ function onGPSError(error) {
         'message: ' + error.message + '\n');
     gpsSucess = false;
 }
+
+function getLocation() {
+    map.locate({
+        setView: true,
+        enableHighAccuracy: true
+      })
+      .on('locationfound', function(e) {
+        var marker = new L.marker(e.latlng);
+        marker.addTo(map);
+      });
+  }
 
 function GPSDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
