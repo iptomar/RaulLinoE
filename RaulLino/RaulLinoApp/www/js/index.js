@@ -90,6 +90,8 @@ var onGPSSuccess = function (position) {
         // Handle the back button
     }
 
+   
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -110,6 +112,8 @@ var onGPSSuccess = function (position) {
         popupAnchor: [-3, -50] // point from which the popup should open relative to the iconAnchor
     });
 
+    
+
 
     fetch("dados.json")
         .then(response => response.json())
@@ -117,7 +121,7 @@ var onGPSSuccess = function (position) {
             var i = 0;
             json.dados.forEach(element => {
                 L.marker([element.coordenadas[0], element.coordenadas[1]], {icon: greenIcon}).addTo(map)
-                    .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '</a>');
+                .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' +'</a>' )
                 i++;
             });
         });

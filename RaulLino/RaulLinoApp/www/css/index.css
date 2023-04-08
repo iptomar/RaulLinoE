@@ -26,7 +26,7 @@ body {
     /* prevent callout to copy image, etc when tap to hold */
     -webkit-text-size-adjust: none;
     /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;
+    
     /* prevent copy paste, to allow, change 'none' to 'text' */
     height: 100vh;
     margin: 0px;
@@ -82,6 +82,33 @@ body {
     font-size: 12px;
     margin: 0px 30px;
     padding: 2px 0px;
+}
+
+.custom-popup .leaflet-popup-content-wrapper {
+    background: #155945;
+    color: #fff;
+    opacity: 80%;
+    font-size: 16px;
+    line-height: 24px;
+    border-radius: 10px;
+}
+
+.custom-popup .leaflet-popup-content-wrapper a {
+    color: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 1;
+    
+    
+}
+
+.custom-popup .leaflet-popup-tip-container {
+    width: 30px;
+    height: 15px;
+}
+
+.custom-popup .leaflet-popup-tip {
+    box-shadow: none;
 }
 
 .event.listening {
@@ -160,8 +187,8 @@ body {
 svg {
     width: 50px;
     height: 50px;
-  }
+}
 
-button{
+button {
     align-self: center;
 }
