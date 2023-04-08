@@ -34,10 +34,10 @@
         <splash src="www/img/RaulLinoLogo.png" density="port-xxhdpi" />
         <splash src="www/img/RaulLinoLogo.png" density="port-xxxhdpi" /> 
 
-        <icon src="www\img\logo.png" density="ldpi"/>
-        <icon src="www\img\logo.png" density="mdpi"/>
-        <icon src="www\img\logo.png" density="hdpi"/>
-        <icon src="www\img\logo.png" density="xhdpi"/>
+        <icon src="www/img/logo.png" density="ldpi"/>
+        <icon src="www/img/logo.png" density="mdpi"/>
+        <icon src="www/img/logo.png" density="hdpi"/>
+        <icon src="www/img/logo.png" density="xhdpi"/>
     
     </platform>
 </widget>
