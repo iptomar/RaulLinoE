@@ -155,12 +155,42 @@ body {
     position: absolute;
     top: 0;
     z-index: 1000;
+    padding: 10px;
+    background-color: #272133;
+    border-radius: 15px;
+    margin: 20px;
+}
+
+#zoomIN {
+    height: 32px;
+    width: 32px;
+    background-color: #fbab1f;
+    border-radius: 50%;
+}
+
+#zoomOUT {
+    height: 32px;
+    width: 32px;
+    background-color: #078C6B;
+    border-radius: 50%;
 }
 
 #imagem_fundo {
     position: absolute;
     height: 100%;
     width: 100%;
+}
+
+#zoom-in-button {
+    all: unset;
+    cursor: pointer;
+    outline: revert;
+}
+
+#zoom-out-button {
+    all: unset;
+    cursor: pointer;
+    outline: revert;
 }
 
 svg {
