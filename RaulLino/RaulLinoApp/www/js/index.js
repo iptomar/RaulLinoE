@@ -122,12 +122,11 @@ var onGPSSuccess = function (position) {
             });
         });
 
-        getLocation();
+    //obter a minha localização
+    getLocation();
 
 
-    // centra o map
-    map.setView(new L.LatLng([abrantesLat, abrantesLong]), 5);
-
+    //map.setCenter({ lat: abrantesLat, lng: abrantesLong });
     mudar_pagina('map');
 };
 
@@ -137,9 +136,10 @@ function onGPSError(error) {
     gpsSucess = false;
 }
 
+//Obter a minha localização
 function getLocation() {
     map.locate({
-        setView: true,
+        setView: false,
         enableHighAccuracy: true
       })
       .on('locationfound', function(e) {
