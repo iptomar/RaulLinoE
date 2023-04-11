@@ -151,6 +151,12 @@ body {
     transform: translate(-50%, -50%);
 }
 
+#zoomINOUT {
+    position: absolute;
+    top: 0;
+    z-index: 1000;
+}
+
 #imagem_fundo {
     position: absolute;
     height: 100%;
@@ -160,8 +166,8 @@ body {
 svg {
     width: 50px;
     height: 50px;
-  }
+}
 
-button{
+button {
     align-self: center;
 }
