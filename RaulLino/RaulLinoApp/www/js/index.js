@@ -73,12 +73,16 @@ var onGPSSuccess = function (position) {
 
 
     if (distancia < 5000) {
-        map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 14);
+        map = L.map('map', {
+            zoomControl: false
+        }).setView([position.coords.latitude, position.coords.longitude], 14);
         L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
             .bindPopup('<strong> GPS</strong>')
             .openPopup();
     } else {
-        map = L.map('map').setView([abrantesLat, abrantesLong], 14);
+        map = L.map('map', {
+            zoomControl: false
+        }).setView([abrantesLat, abrantesLong], 14);
         /*L.marker([abrantesLat, abrantesLong]).addTo(map)
             .bindPopup('<strong> Centro Abrantes</strong>')
             .openPopup();*/
