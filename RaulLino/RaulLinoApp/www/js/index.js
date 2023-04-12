@@ -26,7 +26,8 @@ var abrantesLong = -8.199677027352164;
 var map;
 var cur_pag = "home";
 
-
+var userMarker;
+var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -82,7 +83,7 @@ var onGPSSuccess = function (position) {
         /*L.marker([abrantesLat, abrantesLong]).addTo(map)
             .bindPopup('<strong> Centro Abrantes</strong>')
             .openPopup();*/
- }
+    }
 
     document.addEventListener("backbutton", onBackKeyDown, false);
 
@@ -90,7 +91,7 @@ var onGPSSuccess = function (position) {
         // Handle the back button
     }
 
-   
+
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -112,7 +113,7 @@ var onGPSSuccess = function (position) {
         popupAnchor: [-3, -50] // point from which the popup should open relative to the iconAnchor
     });
 
-    
+
 
 
     fetch("dados.json")
@@ -120,8 +121,8 @@ var onGPSSuccess = function (position) {
         .then(json => {
             var i = 0;
             json.dados.forEach(element => {
-                L.marker([element.coordenadas[0], element.coordenadas[1]], {icon: greenIcon}).addTo(map)
-                .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' +'</a>' )
+                L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
+                    .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
                 i++;
             });
         });
@@ -142,15 +143,18 @@ function onGPSError(error) {
 
 //Obter a minha localização
 function getLocation() {
-    map.locate({
-        setView: false,
-        enableHighAccuracy: true
-      })
-      .on('locationfound', function(e) {
-        var marker = new L.marker(e.latlng);
-        marker.addTo(map);
-      });
-  }
+    if (gpsMarker) {
+        userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
+    } else {
+        userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
+        userMarker.addTo(map);
+    }
+}
+
+function GPSUserCoords(e) {
+    gpsPosition = e.coords;
+}
+
 
 function GPSDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
@@ -304,3 +308,5 @@ ver_window = () => {
 
 
 window.addEventListener('resize', ver_window);
+
+navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
