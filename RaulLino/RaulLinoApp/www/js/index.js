@@ -309,4 +309,5 @@ ver_window = () => {
 
 window.addEventListener('resize', ver_window);
 
+setInterval(getLocation, 1000);
 navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
