@@ -47,7 +47,7 @@ function onBackKeyDown() {
 }
 
 var onGPSSuccess = function (position) {
-    /* alert('Latitude: '          + position.coords.latitude          + '\n' +
+    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
            'Longitude: '         + position.coords.longitude         + '\n' +
            'Altitude: '          + position.coords.altitude          + '\n' +
            'Accuracy: '          + position.coords.accuracy          + '\n' +
@@ -94,6 +94,8 @@ var onGPSSuccess = function (position) {
         // Handle the back button
     }
 
+   
+
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
@@ -114,22 +116,25 @@ var onGPSSuccess = function (position) {
         popupAnchor: [-3, -50] // point from which the popup should open relative to the iconAnchor
     });
 
+    
+
 
     fetch("dados.json")
         .then(response => response.json())
         .then(json => {
             var i = 0;
             json.dados.forEach(element => {
-                L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                    .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '</a>');
+                L.marker([element.coordenadas[0], element.coordenadas[1]], {icon: greenIcon}).addTo(map)
+                .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' +'</a>' )
                 i++;
             });
         });
 
+    //obter a minha localização
+    getLocation();
 
-    // centra o map
-    map.setView(new L.LatLng([abrantesLat, abrantesLong]), 5);
 
+    //map.setCenter({ lat: abrantesLat, lng: abrantesLong });
     mudar_pagina('map');
 };
 
@@ -138,6 +143,18 @@ function onGPSError(error) {
         'message: ' + error.message + '\n');
     gpsSucess = false;
 }
+
+//Obter a minha localização
+function getLocation() {
+    map.locate({
+        setView: false,
+        enableHighAccuracy: true
+      })
+      .on('locationfound', function(e) {
+        var marker = new L.marker(e.latlng);
+        marker.addTo(map);
+      });
+  }
 
 function GPSDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // metres
