@@ -36,12 +36,20 @@ function onDeviceReady() {
 
     //console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
     //document.getElementById('deviceready').classList.add('ready');
-    navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     document.addEventListener("backbutton", onBackKeyDown, false);
 }
 
 function onLoad() {
     document.addEventListener("deviceready", onDeviceReady, false);
+}
+
+function onLoadFotos(){
+    var w = window.innerWidth;
+    ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350));
+}
+
+function onLoadMap(){
+    navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
 }
 
 function onBackKeyDown() {
@@ -327,7 +335,6 @@ ver_window = () => {
     var h = window.innerHeight;
     if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
     else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
-    if (cur_pag == "fotos") ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350))
 }
 
 
