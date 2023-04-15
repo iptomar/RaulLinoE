@@ -206,6 +206,17 @@ function localizacaoAtual(){
     map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude});
 }
 
+function getCookie(name) {
+    var cookies = document.cookie.split("; ");
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].split("=");
+      if (parts[0] === name) {
+        return decodeURIComponent(parts[1]);
+      }
+    }
+    return null;
+}
+
 carrega_pagina = (id) => {
 
     fetch("dados.json")
