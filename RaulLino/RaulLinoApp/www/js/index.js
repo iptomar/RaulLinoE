@@ -194,6 +194,10 @@ function ZoomOUT() {
     });
 }
 
+function localizacaoAtual(){
+    map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude});
+}
+
 carrega_pagina = (id) => {
 
     fetch("dados.json")
