@@ -143,14 +143,17 @@ function onGPSError(error) {
 
 //Obter a minha localização
 function getLocation() {
+    navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
     if (gpsMarker) {
         userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
     } else {
         userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
+        gpsMarker = true;
         userMarker.addTo(map);
     }
 }
 
+//função que é chamada quando se atualização as coordenadas do utilizador
 function GPSUserCoords(e) {
     gpsPosition = e.coords;
 }
@@ -310,4 +313,3 @@ ver_window = () => {
 window.addEventListener('resize', ver_window);
 
 setInterval(getLocation, 1000);
-navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
