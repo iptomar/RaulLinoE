@@ -26,7 +26,8 @@ var abrantesLong = -8.199677027352164;
 var map;
 var cur_pag = "home";
 
-
+var userMarker;
+var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
@@ -146,14 +147,19 @@ function onGPSError(error) {
 
 //Obter a minha localização
 function getLocation() {
-    map.locate({
-        setView: false,
-        enableHighAccuracy: true
-    })
-        .on('locationfound', function (e) {
-            var marker = new L.marker(e.latlng);
-            marker.addTo(map);
-        });
+    navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
+    if (gpsMarker) {
+        userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
+    } else {
+        userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
+        gpsMarker = true;
+        userMarker.addTo(map);
+    }
+}
+
+//função que é chamada quando se atualização as coordenadas do utilizador
+function GPSUserCoords(e) {
+    gpsPosition = e.coords;
 }
 
 function GPSDistance(lat1, lon1, lat2, lon2) {
@@ -322,3 +328,5 @@ ver_window = () => {
 
 
 window.addEventListener('resize', ver_window);
+
+setInterval(getLocation, 1000);
