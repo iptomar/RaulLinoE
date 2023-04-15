@@ -17,26 +17,32 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body onload="ver_window()">
+<body>
 
-
-    <div id="home">
-        <div>
-            <div id="imagem_fundo"></div>
-            <div class="centered">
-                <center>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <a href="mapa.html"> <button style="text-align: center; margin-right: 4%; " type="button" class="btn btn-dark btn-lg">Explorar</button></a>
-                </center>
-            </div>
+    </div>
+    <div id="pagina">
+        <br />
+        <br />
+        <div style="text-align: center;" class="container">
+            <h1 id="pagina_titulo" class="display-6"></h1>
+            <br />
+            <br />
+            <p id="pagina_informacao" class="lead"></p>
+            <br />
+            <p id="pagina_ano"></p>
+            <p id="pagina_localizacao"></p>
+            <p id="pagina_tipologia"></p>
+            <br />
+            <br />
+        </div>
+        <div style="background: #f8f9fa;">
+            <br />
+            <br />
+            <div id="carImag"></div>
+            <br />
+            <br />
+            <br />
+            <br />
         </div>
     </div>
 
@@ -64,17 +70,20 @@
             </li>
         </ul>
     </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
-            integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
-            crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
-            integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
-            crossorigin="anonymous"></script>
-        <script src="cordova.js"></script>
-        <script src="js/index.js"></script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+        integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+        crossorigin="anonymous"></script>
+    <script src="cordova.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>
