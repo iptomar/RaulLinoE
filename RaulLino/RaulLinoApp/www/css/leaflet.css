@@ -265,6 +265,8 @@
 
 .leaflet-interactive {
 	cursor: pointer;
+	width: 60px !important;
+	object-fit: contain;
 }
 
 .leaflet-grab {
