@@ -20,88 +20,27 @@
 // Wait for the deviceready event before using any of Cordova's device APIs.
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 
-var gpsPosition, gpsSucess;
-var abrantesLat = 39.46332002046439;
-var abrantesLong = -8.199677027352164;
-var map;
-var cur_pag = "home";
+var gpsPosition;//coordenadas do utilizador
+var abrantesLat = 39.46332002046439;//latitude da Abrantes
+var abrantesLong = -8.199677027352164;//longintude de Abrantes
+var map;//referencia para o mapa
+var greenIcon, yellowIcon;//icons para o mapa
 
-var userMarker;
+var curPag="none";//nome da página atual
+
+var userMarker;//referencia para o marcardor da localização do utilizador
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
-document.addEventListener('deviceready', onDeviceReady, false);
+var idPag = -1;//index da página de um edificio a ser apresentada
 
+/**
+ * função chamada quando o cordova esta pronto para correr do dispositivo do utilizador
+ */
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
-
-    //console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    //document.getElementById('deviceready').classList.add('ready');
-    navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     document.addEventListener("backbutton", onBackKeyDown, false);
-}
-
-function onLoad() {
-    document.addEventListener("deviceready", onDeviceReady, false);
-}
-
-function onBackKeyDown() {
-}
-
-var onGPSSuccess = function (position) {
-    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
-           'Longitude: '         + position.coords.longitude         + '\n' +
-           'Altitude: '          + position.coords.altitude          + '\n' +
-           'Accuracy: '          + position.coords.accuracy          + '\n' +
-           'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-           'Heading: '           + position.coords.heading           + '\n' +
-           'Speed: '             + position.coords.speed             + '\n' +
-           'Timestamp: '         + position.timestamp                + '\n');*/
-    gpsSucess = true;
-    gpsPosition = position.coords;
-
-    /* var mapclient = L1.mapclient('mapclient').setView([position.coords.latitude , position.coords.longitude ], 13);
-     L1.tileLayer1('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-     }).addTo(mapclient);
- 
-      L1.marker1([position.coords.latitude , position.coords.longitude ]).addTo(mapclient)
-      .bindPopup('<strong> estou no ipt</strong>')
-      .openPopup();
- 
- */
-
-    distancia = GPSDistance(position.coords.latitude, position.coords.longitude, abrantesLat, abrantesLong);
-
-
-    if (distancia < 5000) {
-        map = L.map('map', {
-            zoomControl: false
-        }).setView([position.coords.latitude, position.coords.longitude], 14);
-        L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
-            .bindPopup('<strong> GPS</strong>')
-            .openPopup();
-    } else {
-        map = L.map('map', {
-            zoomControl: false
-        }).setView([abrantesLat, abrantesLong], 14);
-        /*L.marker([abrantesLat, abrantesLong]).addTo(map)
-            .bindPopup('<strong> Centro Abrantes</strong>')
-            .openPopup();*/
-    }
-
-    document.addEventListener("backbutton", onBackKeyDown, false);
-
-    function onBackKeyDown() {
-        // Handle the back button
-    }
-
-
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var yellowIcon = L.icon({
+    
+    yellowIcon = L.icon({
         iconUrl: 'www/img/centro.svg',
 
         iconSize: [65, 150], // size of the icon
@@ -109,97 +48,46 @@ var onGPSSuccess = function (position) {
         popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
-    var greenIcon = L.icon({
+    greenIcon = L.icon({
         iconUrl: 'img/pontointeresse.png',
 
         iconSize: [40, 80], // size of the icon
         iconAnchor: [20, 60], // point of the icon which will correspond to marker's location
         popupAnchor: [-3, -50] // point from which the popup should open relative to the iconAnchor
     });
-
-
-
-
-    fetch("dados.json")
-        .then(response => response.json())
-        .then(json => {
-            var i = 0;
-            json.dados.forEach(element => {
-                L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                    .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
-                i++;
-            });
-        });
-
-    //obter a minha localização
-    getLocation();
-
-
-    //map.setCenter({ lat: abrantesLat, lng: abrantesLong });
-    mudar_pagina('map');
-};
-
-function onGPSError(error) {
-    alert('code: ' + error.code + '\n' +
-        'message: ' + error.message + '\n');
-    gpsSucess = false;
 }
 
-//Obter a minha localização
-function getLocation() {
-    navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
-    if (gpsMarker) {
-        userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
-    } else {
-        userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
-        gpsMarker = true;
-        userMarker.addTo(map);
-    }
+/**
+ * função chamada quando a página fotos fica totalmente carregada
+ */
+function onLoadFotos(){
+    var w = window.innerWidth;
+    ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350));
+    curPag = "Fotos";
 }
 
-//função que é chamada quando se atualização as coordenadas do utilizador
-function GPSUserCoords(e) {
-    gpsPosition = e.coords;
+/**
+ * função chamada quando a página Mapa fica totalmente carregada
+ */
+function onLoadMap(){
+    navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
+    curPag = "Map";
 }
 
-function GPSDistance(lat1, lon1, lat2, lon2) {
-    const R = 6371e3; // metres
-    const teta1 = lat1 * Math.PI / 180; // φ, λ in radians
-    const teta2 = lat2 * Math.PI / 180;
-    const deltat = (lat2 - lat1) * Math.PI / 180;
-    const deltae = (lon2 - lon1) * Math.PI / 180;
-
-    const a = Math.sin(deltat / 2) * Math.sin(deltat / 2) +
-        Math.cos(teta1) * Math.cos(teta2) *
-        Math.sin(deltae / 2) * Math.sin(deltae / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    const d = R * c; // in metres
-
-    return d;
-
+/**
+ * função chamada quando a página Home fica totalmente carregada
+ */
+function onLoadHome(){
+    curPag = "Home";
+    ver_window();
 }
 
-function ZoomIN() {
-    var zoomInButton = document.getElementById('zoom-in-button');
-    zoomInButton.addEventListener('click', function () {
-        map.setZoom(map.getZoom() + 1);
-    });
-}
-
-function ZoomOUT() {
-    var zoomOutButton = document.getElementById('zoom-out-button');
-    zoomOutButton.addEventListener('click', function () {
-        map.setZoom(map.getZoom() - 1);
-    });
-}
-
-function localizacaoAtual(){
-    map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude});
-}
-
-carrega_pagina = (id) => {
-
+/**
+ * função chamada quando a página de um edifício fica totalmente carregada
+ */
+function onLoadPagina() {
+    curPag = "Pagina";
+    idPag = getCookie("idPag");
     fetch("dados.json")
         .then(response => response.json())
         .then(json => {
@@ -207,7 +95,7 @@ carrega_pagina = (id) => {
             var carr =
                 '<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">' +
                 '<div class="carousel-inner">';
-            json.dados[id].imagens.forEach(element => {
+            json.dados[idPag].imagens.forEach(element => {
                 carr += '<center><div class="carousel-item active" ><img  style="max-width:1000px; max-height:800px;" src="' + element + '" class="d-block w-100" ></div></center>'
             });
             carr += '</div>' +
@@ -225,33 +113,195 @@ carrega_pagina = (id) => {
 
             document.getElementById("carImag").innerHTML = carr;
 
-            document.getElementById("pagina_titulo").textContent = json.dados[id].titulo;
-            document.getElementById("pagina_ano").textContent = json.dados[id].ano;
-            document.getElementById("pagina_localizacao").textContent = json.dados[id].localizacao;
-            document.getElementById("pagina_tipologia").textContent = json.dados[id].tipologia;
-            document.getElementById("pagina_informacao").textContent = json.dados[id].info;
+            document.getElementById("pagina_titulo").textContent = json.dados[idPag].titulo;
+            document.getElementById("pagina_ano").textContent = json.dados[idPag].ano;
+            document.getElementById("pagina_localizacao").textContent = json.dados[idPag].localizacao;
+            document.getElementById("pagina_tipologia").textContent = json.dados[idPag].tipologia;
+            document.getElementById("pagina_informacao").textContent = json.dados[idPag].info;
         });
-
-
-    mudar_pagina("pagina");
 }
 
+/**
+ * função chamada quando uma página generica fica totalmente carregada
+ */
+function onLoad(){
+    curPag = "none";
+}
 
-ins_cart = (num_column) => {
+/**
+ * função chamada quando se clica no botão de voltar
+ */
+function onBackKeyDown() {
+    //fazer código para o botão de voltar a trás
+}
+
+/**
+ * função chamado quando o mapa é carregado e quando o dispostivo encontrar com sucesso a localização do utilizador
+ * @param {*} position 
+ */
+function onGPSSuccess(position) {
+    gpsPosition = position.coords;
+
+    map = L.map('map', {
+        zoomControl: false
+    }).setView([abrantesLat, abrantesLong], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    addMarkers();
+    
+    //obter a localização do utilizador e adicionar o marcador no mapa
+    getLocation();
+};
+
+/**
+ * adiciona os marcadores dos edificios ao mapa
+ */
+function addMarkers(){
+    fetch("dados.json")
+    .then(response => response.json())
+    .then(json => {
+        var i = 0;
+        json.dados.forEach(element => {
+            L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
+                .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><span>' + element.titulo + '</span><a href="pagina.html" style="cursor:pointer;"><img src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/> </a>' + '</div>')
+            i++;
+        });
+    });
+}
+
+/**
+ * função chamado quando o mapa é carregado e quando o dispostivo não encontrar a localização do utilizador
+ * @param {*} error 
+ */
+function onGPSError(error) {
+    alert('code: ' + error.code + '\n' +
+        'message: ' + error.message + '\n');
+}
+
+/**
+ * Obtém a localização do utilizador e coloca um marcador nessa posição
+ */
+function getLocation() {
+    if(curPag == "Map"){
+        navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
+        if (gpsMarker) {
+            userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
+        } else {
+            userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
+            gpsMarker = true;
+            userMarker.addTo(map);
+        }
+    }    
+}
+
+/**
+ * atualiza as coordenadas do utilizador
+ * @param {*} e 
+ */
+function GPSUserCoords(e) {
+    gpsPosition = e.coords;
+}
+
+/**
+ * calcula a distancia entre dois pontos do mapa
+ * @param {*} lat1 
+ * @param {*} lon1 
+ * @param {*} lat2 
+ * @param {*} lon2 
+ * @returns 
+ */
+function GPSDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // metres
+    const teta1 = lat1 * Math.PI / 180; // φ, λ in radians
+    const teta2 = lat2 * Math.PI / 180;
+    const deltat = (lat2 - lat1) * Math.PI / 180;
+    const deltae = (lon2 - lon1) * Math.PI / 180;
+
+    const a = Math.sin(deltat / 2) * Math.sin(deltat / 2) +
+        Math.cos(teta1) * Math.cos(teta2) *
+        Math.sin(deltae / 2) * Math.sin(deltae / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const d = R * c; // in metres
+
+    return d;
+}
+
+/**
+ * função para fazer zoom in no mapa
+ */
+function ZoomIN() {
+    var zoomInButton = document.getElementById('zoom-in-button');
+    zoomInButton.addEventListener('click', function () {
+        map.setZoom(map.getZoom() + 1);
+    });
+}
+
+/**
+ * função para fazer zoom out no mapa
+ */
+function ZoomOUT() {
+    var zoomOutButton = document.getElementById('zoom-out-button');
+    zoomOutButton.addEventListener('click', function () {
+        map.setZoom(map.getZoom() - 1);
+    });
+}
+
+/**
+ * função para centrar o mapa na localização do utilizador
+ */
+function localizacaoAtual(){
+    map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude});
+}
+
+/**
+ * função que permite obter o valor de um cookie específico
+ * @param {*} name 
+ * @returns 
+ */
+function getCookie(name) {
+    var cookies = document.cookie.split("; ");
+    for (var i = 0; i < cookies.length; i++) {
+      var parts = cookies[i].split("=");
+      if (parts[0] === name) {
+        return decodeURIComponent(parts[1]);
+      }
+    }
+    return null;
+}
+
+/**
+ * guardar a pagina de edifício a ser apresentada
+ * @param {*} i 
+ */
+function idPagVer(i){
+    idPag = i;
+    document.cookie = "idPag="+i;
+}
+
+/**
+ * coloca o código HTML dos cartões da página Fotos
+ * @param {*} num_column 
+ */
+function ins_cart(num_column) {
     fetch("dados.json")
         .then(response => response.json())
         .then(json => {
             let str_ins = '<div class="card-group">';
             let i = 0;
             json.dados.forEach(element => {
-                let str_card =
-                    '<div class="card" style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' +
+                let str_card =                    
+                    '<div class="card" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' +
+                    '<a href="pagina.html">'+
                     '<center><img style="width:100%; height:278px;" src="' + element.imagens[0] + '" class="card-img-top" alt="' + element.imagens[0] + '"/></center>' +
+                    '</a>'+
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + element.titulo + '</h5>' +
                     '<p class="card-text" style="text-align: justify">' + element.info.substring(0, 250) + '</p>' +
                     '<p class="card-text"><small class="text-muted">' + element.ano + '</small></p>' +
-                    '</div>' +
+                    '</div>' +                    
                     '</div>';
                 if (i % num_column == 0) {
                     str_ins += '</div>'
@@ -265,72 +315,23 @@ ins_cart = (num_column) => {
         });
 }
 
-mudar_pagina = (pagina) => {
-    cur_pag = pagina
-    if (pagina == "home") {
-        document.getElementById("home").style.display = "block";
-        document.getElementById("map").style.opacity = 0;
-        document.getElementById("map").style.transform = "translate(0%, -200%)";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-        ver_window();
-    }
-    else if (pagina == "map") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "block";
-        document.getElementById("map").style.opacity = 1;
-        document.getElementById("map").style.transform = "translate(0%, 0%)";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-    }
-    else if (pagina == "raullino") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "block";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-    }
-    else if (pagina == "pagina") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "block";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-    }
-    else if (pagina == "fotos") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "block";
-        document.getElementById("about").style.display = "none";
-        ins_cart(parseInt(window.innerWidth / 350) > 3 ? 3 : parseInt(window.innerWidth / 350))
-    }
-    else if (pagina == "about") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "block";
-    }
+/**
+ * função que seleciona a melhor imagem a ser apresentada de fundo na Home
+ */
+function ver_window(){
+    if(curPag == "Home"){
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
+        else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
+    }    
 }
 
-ver_window = () => {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
-    else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
-    if (cur_pag == "fotos") ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350))
-}
-
-
+//define o evento a ser executado quando se redimensiona o ecrâ
 window.addEventListener('resize', ver_window);
 
+// define o evento a ser executado quando o cordova está pronto a correr
+document.addEventListener('deviceready', onDeviceReady, false);
+
+//faz uma chamada a função "getLocation()" a cada 1s
 setInterval(getLocation, 1000);
