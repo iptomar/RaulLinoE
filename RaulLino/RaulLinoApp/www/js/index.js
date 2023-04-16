@@ -29,6 +29,8 @@ var cur_pag = "home";
 var userMarker;
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
+var idPag = -1;
+
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
@@ -134,7 +136,7 @@ var onGPSSuccess = function (position) {
             var i = 0;
             json.dados.forEach(element => {
                 L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                    .bindPopup('<a style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
+                    .bindPopup('<a href="pagina.html" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
                 i++;
             });
         });
@@ -217,8 +219,14 @@ function getCookie(name) {
     return null;
 }
 
-carrega_pagina = (id) => {
+function idPagVer(i){
+    console.log("Pagina Index i :"+i);
+    idPag = i;
+    document.cookie = "idPag="+i;
+}
 
+function onLoadPagina() {
+    idPag = getCookie("idPag");
     fetch("dados.json")
         .then(response => response.json())
         .then(json => {
@@ -226,7 +234,7 @@ carrega_pagina = (id) => {
             var carr =
                 '<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">' +
                 '<div class="carousel-inner">';
-            json.dados[id].imagens.forEach(element => {
+            json.dados[idPag].imagens.forEach(element => {
                 carr += '<center><div class="carousel-item active" ><img  style="max-width:1000px; max-height:800px;" src="' + element + '" class="d-block w-100" ></div></center>'
             });
             carr += '</div>' +
@@ -244,15 +252,12 @@ carrega_pagina = (id) => {
 
             document.getElementById("carImag").innerHTML = carr;
 
-            document.getElementById("pagina_titulo").textContent = json.dados[id].titulo;
-            document.getElementById("pagina_ano").textContent = json.dados[id].ano;
-            document.getElementById("pagina_localizacao").textContent = json.dados[id].localizacao;
-            document.getElementById("pagina_tipologia").textContent = json.dados[id].tipologia;
-            document.getElementById("pagina_informacao").textContent = json.dados[id].info;
+            document.getElementById("pagina_titulo").textContent = json.dados[idPag].titulo;
+            document.getElementById("pagina_ano").textContent = json.dados[idPag].ano;
+            document.getElementById("pagina_localizacao").textContent = json.dados[idPag].localizacao;
+            document.getElementById("pagina_tipologia").textContent = json.dados[idPag].tipologia;
+            document.getElementById("pagina_informacao").textContent = json.dados[idPag].info;
         });
-
-
-    mudar_pagina("pagina");
 }
 
 
@@ -264,13 +269,16 @@ ins_cart = (num_column) => {
             let i = 0;
             json.dados.forEach(element => {
                 let str_card =
-                    '<div class="card" style="cursor:pointer;" onclick="carrega_pagina(' + i + ');">' +
+                    
+                    '<div class="card" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' +
+                    '<a href="pagina.html">'+
                     '<center><img style="width:100%; height:278px;" src="' + element.imagens[0] + '" class="card-img-top" alt="' + element.imagens[0] + '"/></center>' +
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + element.titulo + '</h5>' +
                     '<p class="card-text" style="text-align: justify">' + element.info.substring(0, 250) + '</p>' +
                     '<p class="card-text"><small class="text-muted">' + element.ano + '</small></p>' +
                     '</div>' +
+                    '</a>'+
                     '</div>';
                 if (i % num_column == 0) {
                     str_ins += '</div>'
