@@ -25,6 +25,8 @@ var abrantesLat = 39.46332002046439;
 var abrantesLong = -8.199677027352164;
 var map;
 
+var curPag="none";
+
 var userMarker;
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
@@ -40,10 +42,21 @@ function onDeviceReady() {
 function onLoadFotos(){
     var w = window.innerWidth;
     ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350));
+    curPag = "Fotos";
 }
 
 function onLoadMap(){
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
+    curPag = "Map";
+}
+
+function onLoadHome(){
+    curPag = "Home";
+    ver_window();
+}
+
+function onLoad(){
+    curPag = "none";
 }
 
 function onBackKeyDown() {
@@ -78,16 +91,13 @@ var onGPSSuccess = function (position) {
         popupAnchor: [-3, -50] // point from which the popup should open relative to the iconAnchor
     });
 
-
-
-
     fetch("dados.json")
         .then(response => response.json())
         .then(json => {
             var i = 0;
             json.dados.forEach(element => {
                 L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                    .bindPopup('<a href="pagina.html" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' + element.titulo + '<br>' + '<img src="www/img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
+                    .bindPopup('<a href="pagina.html" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' + element.titulo + '<br>' + '<img src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
                 i++;
             });
         });
@@ -105,14 +115,16 @@ function onGPSError(error) {
 
 //Obter a minha localização
 function getLocation() {
-    navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
-    if (gpsMarker) {
-        userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
-    } else {
-        userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
-        gpsMarker = true;
-        userMarker.addTo(map);
-    }
+    if(curPag == "Map"){
+        navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
+        if (gpsMarker) {
+            userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
+        } else {
+            userMarker = new L.marker([gpsPosition.latitude, gpsPosition.longitude]);
+            gpsMarker = true;
+            userMarker.addTo(map);
+        }
+    }    
 }
 
 //função que é chamada quando se atualização as coordenadas do utilizador
@@ -168,12 +180,12 @@ function getCookie(name) {
 }
 
 function idPagVer(i){
-    console.log("Pagina Index i :"+i);
     idPag = i;
     document.cookie = "idPag="+i;
 }
 
 function onLoadPagina() {
+    curPag = "Pagina";
     idPag = getCookie("idPag");
     fetch("dados.json")
         .then(response => response.json())
@@ -216,8 +228,7 @@ ins_cart = (num_column) => {
             let str_ins = '<div class="card-group">';
             let i = 0;
             json.dados.forEach(element => {
-                let str_card =
-                    
+                let str_card =                    
                     '<div class="card" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' +
                     '<a href="pagina.html">'+
                     '<center><img style="width:100%; height:278px;" src="' + element.imagens[0] + '" class="card-img-top" alt="' + element.imagens[0] + '"/></center>' +
@@ -241,10 +252,12 @@ ins_cart = (num_column) => {
 }
 
 ver_window = () => {
-    var w = window.innerWidth;
-    var h = window.innerHeight;
-    if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
-    else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
+    if(curPag == "Home"){
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+        if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
+        else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
+    }    
 }
 
 window.addEventListener('resize', ver_window);
