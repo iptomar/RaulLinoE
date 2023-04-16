@@ -24,7 +24,6 @@ var gpsPosition, gpsSucess;
 var abrantesLat = 39.46332002046439;
 var abrantesLong = -8.199677027352164;
 var map;
-var cur_pag = "home";
 
 var userMarker;
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
@@ -35,14 +34,7 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
-
-    //console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    //document.getElementById('deviceready').classList.add('ready');
     document.addEventListener("backbutton", onBackKeyDown, false);
-}
-
-function onLoad() {
-    document.addEventListener("deviceready", onDeviceReady, false);
 }
 
 function onLoadFotos(){
@@ -58,54 +50,13 @@ function onBackKeyDown() {
 }
 
 var onGPSSuccess = function (position) {
-    /*alert('Latitude: '          + position.coords.latitude          + '\n' +
-           'Longitude: '         + position.coords.longitude         + '\n' +
-           'Altitude: '          + position.coords.altitude          + '\n' +
-           'Accuracy: '          + position.coords.accuracy          + '\n' +
-           'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-           'Heading: '           + position.coords.heading           + '\n' +
-           'Speed: '             + position.coords.speed             + '\n' +
-           'Timestamp: '         + position.timestamp                + '\n');*/
     gpsSucess = true;
     gpsPosition = position.coords;
 
-    /* var mapclient = L1.mapclient('mapclient').setView([position.coords.latitude , position.coords.longitude ], 13);
-     L1.tileLayer1('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-     }).addTo(mapclient);
- 
-      L1.marker1([position.coords.latitude , position.coords.longitude ]).addTo(mapclient)
-      .bindPopup('<strong> estou no ipt</strong>')
-      .openPopup();
- 
- */
-
     distancia = GPSDistance(position.coords.latitude, position.coords.longitude, abrantesLat, abrantesLong);
-
-
-    if (distancia < 5000) {
-        map = L.map('map', {
-            zoomControl: false
-        }).setView([position.coords.latitude, position.coords.longitude], 14);
-        L.marker([position.coords.latitude, position.coords.longitude]).addTo(map)
-            .bindPopup('<strong> GPS</strong>')
-            .openPopup();
-    } else {
-        map = L.map('map', {
-            zoomControl: false
-        }).setView([abrantesLat, abrantesLong], 14);
-        /*L.marker([abrantesLat, abrantesLong]).addTo(map)
-            .bindPopup('<strong> Centro Abrantes</strong>')
-            .openPopup();*/
-    }
-
-    document.addEventListener("backbutton", onBackKeyDown, false);
-
-    function onBackKeyDown() {
-        // Handle the back button
-    }
-
-
+    map = L.map('map', {
+        zoomControl: false
+    }).setView([abrantesLat, abrantesLong], 14);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -141,12 +92,9 @@ var onGPSSuccess = function (position) {
             });
         });
 
-    //obter a minha localização
+    
+    //obter a localização do utilizador e adicionar o marcador no mapa
     getLocation();
-
-
-    //map.setCenter({ lat: abrantesLat, lng: abrantesLong });
-    mudar_pagina('map');
 };
 
 function onGPSError(error) {
@@ -292,70 +240,12 @@ ins_cart = (num_column) => {
         });
 }
 
-mudar_pagina = (pagina) => {
-    cur_pag = pagina
-    if (pagina == "home") {
-        document.getElementById("home").style.display = "block";
-        document.getElementById("map").style.opacity = 0;
-        document.getElementById("map").style.transform = "translate(0%, -200%)";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-        ver_window();
-    }
-    else if (pagina == "map") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "block";
-        document.getElementById("map").style.opacity = 1;
-        document.getElementById("map").style.transform = "translate(0%, 0%)";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-    }
-    else if (pagina == "raullino") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "block";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-    }
-    else if (pagina == "pagina") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "block";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "none";
-    }
-    else if (pagina == "fotos") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "block";
-        document.getElementById("about").style.display = "none";
-        ins_cart(parseInt(window.innerWidth / 350) > 3 ? 3 : parseInt(window.innerWidth / 350))
-    }
-    else if (pagina == "about") {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("map").style.display = "none";
-        document.getElementById("raullino").style.display = "none";
-        document.getElementById("pagina").style.display = "none";
-        document.getElementById("fotos").style.display = "none";
-        document.getElementById("about").style.display = "block";
-    }
-}
-
 ver_window = () => {
     var w = window.innerWidth;
     var h = window.innerHeight;
     if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
     else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
 }
-
 
 window.addEventListener('resize', ver_window);
 
