@@ -166,7 +166,7 @@ function addMarkers(){
         var i = 0;
         json.dados.forEach(element => {
             L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                .bindPopup('<a href="pagina.html" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' + element.titulo + '<br>' + '<img src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/>' + '</a>')
+                .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><span>' + element.titulo + '</span><a href="pagina.html" style="cursor:pointer;"><img src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/> </a>' + '</div>')
             i++;
         });
     });
@@ -296,12 +296,12 @@ function ins_cart(num_column) {
                     '<div class="card" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' +
                     '<a href="pagina.html">'+
                     '<center><img style="width:100%; height:278px;" src="' + element.imagens[0] + '" class="card-img-top" alt="' + element.imagens[0] + '"/></center>' +
+                    '</a>'+
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + element.titulo + '</h5>' +
                     '<p class="card-text" style="text-align: justify">' + element.info.substring(0, 250) + '</p>' +
                     '<p class="card-text"><small class="text-muted">' + element.ano + '</small></p>' +
-                    '</div>' +
-                    '</a>'+
+                    '</div>' +                    
                     '</div>';
                 if (i % num_column == 0) {
                     str_ins += '</div>'
