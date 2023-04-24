@@ -200,6 +200,7 @@ button {
     background-color: #272133;
     border-radius: 15px;
     margin: 20px;
+    margin-bottom: 30px;
 }
 
 #botao {
@@ -207,6 +208,7 @@ button {
     width: 32px;
     background-color: #fbab1f;
     border-radius: 50%;
+    
 }
 
 #localizacao-button {
