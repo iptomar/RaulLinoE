@@ -165,11 +165,25 @@ button {
     font-size: larger;
 }
 
+
 .localizacao-button {
     all: unset;
     cursor: pointer;
     outline: revert;
     margin: 4px;
+}
+
+.titulo {
+    font: bolder;
+    font-size: 50px;
+}
+
+.subtitulo {
+    font: bolder;
+    font-size: 30px;
+    color: #078C6B;
+    margin-top: auto;
+    margin-bottom: 10px;
 }
 
 /*
@@ -289,6 +303,20 @@ button {
     all: unset;
     cursor: pointer;
     outline: revert;
+}
+
+#cabecalho {
+    display: flex;
+    justify-content: space-between;
+    font-family: RaulLino;
+}
+
+#barraAmarela {
+    background-color: #ffd683;
+    z-index: 10;
+    border-radius: 10px;
+    height: 4px;
+    margin-bottom: 20px;
 }
 
 /*
