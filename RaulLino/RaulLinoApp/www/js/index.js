@@ -257,6 +257,13 @@ function localizacaoAtual(){
 }
 
 /**
+ * Função para centrar o mapa em Abrantes
+ */
+function localizacaoAbrant(){
+    map.setView({lat: abrantesLat, lng: abrantesLong});
+}
+
+/**
  * função que permite obter o valor de um cookie específico
  * @param {*} name 
  * @returns 
