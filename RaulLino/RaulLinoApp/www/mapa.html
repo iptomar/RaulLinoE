@@ -21,45 +21,54 @@
     <div class="moldura">
         <span>mapa</span>
         <div class="custom-popup" id="map">
-        <div id="zoomINOUT">
-            <div id="zoomIN">
-                <button id="zoom-in-button" onclick="ZoomIN()">
-                    <img src="img/mais_mapa.png" style="max-width:32px; max-height:32px;"></button>
+            <div id="zoomINOUT">
+                <div id="zoomIN">
+                    <button id="zoom-in-button" onclick="ZoomIN()">
+                        <img src="img/mais_mapa.png" style="max-width:32px; max-height:32px;"></button>
+                </div>
+
+                </br>
+                <div id="zoomOUT">
+                    <button id="zoom-out-button" onclick="ZoomOUT()"> <img src="img/menos_mapa.png"
+                            style="max-width:32px; max-height:32px;"></button>
+                </div>
             </div>
 
-            </br>
-            <div id="zoomOUT">
-                <button id="zoom-out-button" onclick="ZoomOUT()"> <img src="img/menos_mapa.png"
-                        style="max-width:32px; max-height:32px;"></button>
+            <div id="localizacao">
+                <div id="botao">
+                    <button class="localizacao-button" onclick="localizacaoAtual()">
+                        <img src="img/localizacao.png" style="width:24px; height:24px;"></button>
+                </div>
             </div>
-        </div>
 
-        <div id="localizacao">
-            <div id="botao">
-                <button id="localizacao-button" onclick="localizacaoAtual()">
-                    <img src="img/localizacao.png" style="width:24px; height:24px;"></button>
+            <div id="localAbrant">
+                <div id="botAbrant">
+                    <button class="localizacao-button" onclick="localizacaoAbrant()">
+                        <img src="img/localAbrant.png" style="width:24px; height:24px;"></button>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 
-    <div id="navbar " class="bar" >
+    <div id="navbar " class="bar">
         <ul class="nav justify-content-center">
-            <li class="nav-item" >
-                <a href="index.html" style="cursor:pointer;" class="nav-link active" aria-current="page"><img src="img/home.svg"
-                        style="height:50px; width: 50px;" /></a>
+            <li class="nav-item">
+                <a href="index.html" style="cursor:pointer;" class="nav-link active" aria-current="page"><img
+                        src="img/home.svg" style="height:50px; width: 50px;" /></a>
             </li>
-            <li class="nav-item" >
-                <p style="color:#FFFFFF; background-color: #fbab1f; z-index: 10;border-radius: 10px;height: 7px; width: 50px; margin: auto;"></p>
+            <li class="nav-item">
+                <p
+                    style="color:#FFFFFF; background-color: #fbab1f; z-index: 10;border-radius: 10px;height: 7px; width: 50px; margin: auto;">
+                </p>
                 <a href="mapa.html" style="cursor:pointer;" class="nav-link">
                     <img src="img/mapa.svg" style="height:50px; width: 50px" /></a>
             </li>
-            <li class="nav-item" >
-                
+            <li class="nav-item">
+
                 <a href="raullino.html" style="cursor:pointer; padding-top:0px ;" class="nav-link">
                     <img src="img/notabiografica.svg" style="height:70px; width: 50px" /></a>
             </li>
-            <li class="nav-item" >
+            <li class="nav-item">
                 <a href="fotos.html" style="cursor:pointer; padding-top: 7px;" class="nav-link">
                     <img src="img/realidade_aumentada.svg" style="height:55px; width: 55px" /></a>
             </li>
