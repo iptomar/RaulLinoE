@@ -165,6 +165,14 @@ button {
     font-size: larger;
 }
 
+
+.localizacao-button {
+    all: unset;
+    cursor: pointer;
+    outline: revert;
+    margin: 4px;
+}
+
 .titulo {
     font: bolder;
     font-size: 50px;
@@ -234,6 +242,19 @@ button {
     margin-bottom: 30px;
 }
 
+#localAbrant{
+    position: absolute;
+    right: 0;
+    bottom: 15%;
+    z-index: 1000;
+    padding: 10px;
+    background-color: #272133;
+    border-radius: 15px;
+    margin: 20px;
+    margin-bottom: 30px;
+}
+
+
 #botao {
     height: 32px;
     width: 32px;
@@ -242,12 +263,15 @@ button {
 
 }
 
-#localizacao-button {
-    all: unset;
-    cursor: pointer;
-    outline: revert;
-    margin: 4px;
+#botAbrant {
+    height: 32px;
+    width: 32px;
+    background-color: #078C6B;
+    border-radius: 50%;
+
 }
+
+
 
 #zoomIN {
     height: 32px;
