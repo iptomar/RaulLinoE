@@ -253,14 +253,14 @@ function ZoomOUT() {
  * função para centrar o mapa na localização do utilizador
  */
 function localizacaoAtual(){
-    map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude});
+    map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude}, 14);
 }
 
 /**
  * Função para centrar o mapa em Abrantes
  */
 function localizacaoAbrant(){
-    map.setView({lat: abrantesLat, lng: abrantesLong});
+    map.setView({lat: abrantesLat, lng: abrantesLong}, 14);
 }
 
 /**
