@@ -263,6 +263,17 @@
 
 /* cursors */
 
+.leaflet-interactive:focus {
+
+	content: url('localizacao_amarela.png');
+	display: block;
+	width: 100px;
+	height: 100px;
+}
+
+.leaflet-marker-icon:active,
+.leaflet-zoom-animated:active,
+
 .leaflet-interactive {
 	cursor: pointer;
 	width: 60px !important;
