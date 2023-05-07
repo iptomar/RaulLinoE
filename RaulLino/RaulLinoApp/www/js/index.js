@@ -329,7 +329,7 @@ function ver_window(){
     if(curPag == "Home"){
         var w = window.innerWidth;
         var h = window.innerHeight;
-        if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
+        if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + (h - 200) + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
         else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
     }    
 }
