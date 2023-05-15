@@ -184,6 +184,18 @@ button {
     margin-bottom: 10px;
 }
 
+.inicio{
+    display: flex;
+    align-items: center; 
+    margin-bottom: 20px;
+    vertical-align: middle;
+}
+
+.imagemI {
+    width: 143px; /* Defina a largura da imagem */
+    height: auto; /* Ajusta a altura proporcionalmente */
+    margin-right: 10px; /* Adicione um espaçamento entre a imagem e o texto */
+}
 /*
     ID's
 */
