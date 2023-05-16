@@ -369,6 +369,8 @@ html {
 }
 
 .card {
+    border: 2px solid #078C6B !important;
+    padding: 13px;
     font-family: 'Fira Sans';
     font-size: 18px;
     border-style: solid;
