@@ -200,6 +200,10 @@ button {
     /* Adicione um espaçamento entre a imagem e o texto */
 }
 
+.card-title {
+    font-weight: bold !important;
+}
+
 /*
     ID's
 */
@@ -365,7 +369,8 @@ html {
 }
 
 .card {
-
+    font-family: 'Fira Sans';
+    font-size: 18px;
     border-style: solid;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin: 15px;
