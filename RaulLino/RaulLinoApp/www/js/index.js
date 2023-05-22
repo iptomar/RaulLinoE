@@ -70,6 +70,7 @@ function onLoadFotos(){
  * função chamada quando a página Mapa fica totalmente carregada
  */
 function onLoadMap(){
+    document.getElementById("itinerario").style.display = "none";
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     curPag = "Map";
 }
