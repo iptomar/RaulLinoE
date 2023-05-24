@@ -71,8 +71,8 @@ function onLoadFotos() {
 /**
  * função chamada quando a página Mapa fica totalmente carregada
  */
-function onLoadMap(){
-    document.getElementById("itinerario").style.display = "none";
+function onLoadMap() {
+    //document.getElementById("itinerario").style.display = "none";
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     curPag = "Map";
 }
@@ -328,6 +328,49 @@ function ins_cart(num_column) {
             str_ins += '</div>'
             document.getElementById("fotos").innerHTML = str_ins;
         });
+}
+
+function addListItenerario() {
+    var codHTML = '<ul class="list-group shadow">';
+    fetch("dados.json")
+        .then(response => response.json())
+        .then(json => {
+            for (let i = 0; i < itinerario.length; i++) {
+                codHTML += '<li class="list-group-item">';
+                codHTML += '<div class="media align-items-lg-center flex-column flex-lg-row p-3">';
+                codHTML += '<div class="media-body order-2 order-lg-1">';
+                codHTML += '<h5 class="mt-0 font-weight-bold mb-2">' + json.dados[i].titulo + '</h5>';
+                codHTML += '<p class="font-italic text-muted mb-0 small">' + json.dados[i].info.substring(0, 40) + '</p>';
+                codHTML += '<img src="' + json.dados[i].imagens[0] + '" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2">';
+                codHTML += '<div class="d-flex align-items-center justify-content-between mt-1">';
+                codHTML += '<h6 class="font-weight-bold my-2"><button onMouseClick="removeItemIti(' + i + ')">Remover</button></h6>';
+                codHTML += '</div>';
+                codHTML += '</div>';
+                codHTML += '</div></li>';
+
+            }
+            codHTML += '</ul>';
+            document.getElementById("listaItinerario").innerHTML = codHTML;
+        });
+
+}
+
+function removeItemIti(i) {
+    if (i > -1) {
+        itinerario.splice(i, 1);
+    }
+}
+
+function mostrarItinerario() {
+    document.getElementById("botIt").style.display = "block";
+    document.getElementById("map").style.display = "none";
+
+    itinerario = getCookie("itinerario").split('|');
+    for (let i = 0; i < itinerario.length; i++) {
+        itinerario[i] = parseInt(itinerario[i]);
+    }
+    addListItenerario();
+
 }
 
 /**
