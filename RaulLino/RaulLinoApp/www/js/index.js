@@ -26,12 +26,14 @@ var abrantesLong = -8.199677027352164;//longintude de Abrantes
 var map;//referencia para o mapa
 var greenIcon, yellowIcon;//icons para o mapa
 
-var curPag="none";//nome da página atual
+var curPag = "none";//nome da página atual
 
 var userMarker;//referencia para o marcardor da localização do utilizador
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
 var idPag = -1;//index da página de um edificio a ser apresentada
+
+var itinerario = [];
 
 /**
  * função chamada quando o cordova esta pronto para correr do dispositivo do utilizador
@@ -39,7 +41,7 @@ var idPag = -1;//index da página de um edificio a ser apresentada
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
     document.addEventListener("backbutton", onBackKeyDown, false);
-    
+
     yellowIcon = L.icon({
         iconUrl: 'www/img/centro.svg',
 
@@ -60,7 +62,7 @@ function onDeviceReady() {
 /**
  * função chamada quando a página fotos fica totalmente carregada
  */
-function onLoadFotos(){
+function onLoadFotos() {
     var w = window.innerWidth;
     ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350));
     curPag = "Fotos";
@@ -78,7 +80,7 @@ function onLoadMap(){
 /**
  * função chamada quando a página Home fica totalmente carregada
  */
-function onLoadHome(){
+function onLoadHome() {
     curPag = "Home";
     ver_window();
 }
@@ -125,7 +127,7 @@ function onLoadPagina() {
 /**
  * função chamada quando uma página generica fica totalmente carregada
  */
-function onLoad(){
+function onLoad() {
     curPag = "none";
 }
 
@@ -150,9 +152,9 @@ function onGPSSuccess(position) {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-    
+
     addMarkers();
-    
+
     //obter a localização do utilizador e adicionar o marcador no mapa
     getLocation();
 };
@@ -160,17 +162,22 @@ function onGPSSuccess(position) {
 /**
  * adiciona os marcadores dos edificios ao mapa
  */
-function addMarkers(){
+function addMarkers() {
     fetch("dados.json")
-    .then(response => response.json())
-    .then(json => {
-        var i = 0;
-        json.dados.forEach(element => {
-            L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><span>' + element.titulo + '</span><a href="pagina.html" style="cursor:pointer;"><img src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/> </a>' + '</div>')
-            i++;
+        .then(response => response.json())
+        .then(json => {
+            var i = 0;
+            json.dados.forEach(element => {
+                L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
+                    .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><a href="pagina.html" style="cursor:pointer;"><span>' + element.titulo + '</span></a><img onclick="addItenario(' + i + ')" src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/></div>')
+                i++;
+            });
         });
-    });
+}
+
+function addItenario(i) {
+    itinerario.push(i);
+    document.cookie = "itinerario=" + itinerario.join('|');
 }
 
 /**
@@ -186,7 +193,7 @@ function onGPSError(error) {
  * Obtém a localização do utilizador e coloca um marcador nessa posição
  */
 function getLocation() {
-    if(curPag == "Map"){
+    if (curPag == "Map") {
         navigator.geolocation.getCurrentPosition(GPSUserCoords, onGPSError);
         if (gpsMarker) {
             userMarker.setLatLng([gpsPosition.latitude, gpsPosition.longitude]);
@@ -195,7 +202,7 @@ function getLocation() {
             gpsMarker = true;
             userMarker.addTo(map);
         }
-    }    
+    }
 }
 
 /**
@@ -253,15 +260,15 @@ function ZoomOUT() {
 /**
  * função para centrar o mapa na localização do utilizador
  */
-function localizacaoAtual(){
-    map.setView({lat: gpsPosition.latitude, lng: gpsPosition.longitude}, 14);
+function localizacaoAtual() {
+    map.setView({ lat: gpsPosition.latitude, lng: gpsPosition.longitude }, 14);
 }
 
 /**
  * Função para centrar o mapa em Abrantes
  */
-function localizacaoAbrant(){
-    map.setView({lat: abrantesLat, lng: abrantesLong}, 14);
+function localizacaoAbrant() {
+    map.setView({ lat: abrantesLat, lng: abrantesLong }, 14);
 }
 
 /**
@@ -272,10 +279,10 @@ function localizacaoAbrant(){
 function getCookie(name) {
     var cookies = document.cookie.split("; ");
     for (var i = 0; i < cookies.length; i++) {
-      var parts = cookies[i].split("=");
-      if (parts[0] === name) {
-        return decodeURIComponent(parts[1]);
-      }
+        var parts = cookies[i].split("=");
+        if (parts[0] === name) {
+            return decodeURIComponent(parts[1]);
+        }
     }
     return null;
 }
@@ -284,9 +291,9 @@ function getCookie(name) {
  * guardar a pagina de edifício a ser apresentada
  * @param {*} i 
  */
-function idPagVer(i){
+function idPagVer(i) {
     idPag = i;
-    document.cookie = "idPag="+i;
+    document.cookie = "idPag=" + i;
 }
 
 /**
@@ -300,16 +307,16 @@ function ins_cart(num_column) {
             let str_ins = '<div class="card-group">';
             let i = 0;
             json.dados.forEach(element => {
-                let str_card =                    
+                let str_card =
                     '<div class="card" style="cursor:pointer;" onMouseOver="idPagVer(' + i + ');">' +
-                    '<a href="pagina.html">'+
+                    '<a href="pagina.html">' +
                     '<center><img style="width:100%; height:278px;" src="' + element.imagens[0] + '" class="card-img-top" alt="' + element.imagens[0] + '"/></center>' +
-                    '</a>'+
+                    '</a>' +
                     '<div class="card-body">' +
                     '<h5 class="card-title">' + element.titulo + '</h5>' +
                     '<p class="card-text" style="text-align: justify">' + element.info.substring(0, 250) + '</p>' +
                     '<p class="card-text"><small class="text-muted">' + element.ano + '</small></p>' +
-                    '</div>' +                    
+                    '</div>' +
                     '</div>';
                 if (i % num_column == 0) {
                     str_ins += '</div>'
@@ -326,13 +333,13 @@ function ins_cart(num_column) {
 /**
  * função que seleciona a melhor imagem a ser apresentada de fundo na Home
  */
-function ver_window(){
-    if(curPag == "Home"){
+function ver_window() {
+    if (curPag == "Home") {
         var w = window.innerWidth;
         var h = window.innerHeight;
         if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + (h - 200) + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
         else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
-    }    
+    }
 }
 
 //define o evento a ser executado quando se redimensiona o ecrâ
