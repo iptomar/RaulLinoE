@@ -200,7 +200,7 @@ button {
     font-weight: bold !important;
 }
 
-.botoes{
+.botoes {
     text-align: center;
     position: fixed;
     bottom: 40px;
@@ -208,16 +208,13 @@ button {
     transform: translateX(-50%);
 }
 
+.sobreI {
+    padding: 13px;
+}
+
 /*
     ID's
 */
-
-#paginainicial {
-    background-image: url('images/abrantes1.png');
-    width: 100%;
-    height: 100%;
-}
-
 #deviceready.ready .event.listening {
     display: none;
 }
@@ -285,7 +282,7 @@ button {
 
 }
 
-#botIt{
+#botIt {
 
     height: 32px;
     width: 32px;
@@ -462,8 +459,8 @@ html {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: rgba(255,255,255,0.1);
-   transition: all 0.3s;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
 }
 
 .btn-three:hover::before {
@@ -481,8 +478,9 @@ html {
     z-index: 1;
     opacity: 0;
     transition: all 0.3s;
-    border: 1px solid rgba(255,255,255,0.5);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     transform: scale(1.2, 1.2);
+    border-radius: 12px;
 }
 
 .btn-three:hover::after {
@@ -491,5 +489,7 @@ html {
 
 }
 
-.box-3 { background-color: #3C3C3C; }
-
+.box-3 {
+    background-color: #155945;
+    border-radius: 12px;
+}
