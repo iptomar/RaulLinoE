@@ -76,6 +76,7 @@ function onLoadMap() {
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     curPag = "Map";
     getItinerarios();
+    mostraMap();
 }
 
 /**
@@ -395,10 +396,19 @@ function removeItemIti(i) {
  * Faz mostrar a div da lista dos itinerarios e esconde a div do map
  */
 function mostrarItinerario() {
-    document.getElementById("botIt").style.display = "block";
+    document.getElementById("itinerario").style.display = "block";
     document.getElementById("map").style.display = "none";
     getItinerarios();
     gerarListItenerario();
+}
+
+/**
+ * Faz mostrar a div da map e esconde a div do lista dos itinerarios
+ */
+function mostraMap(){
+    document.getElementById("itinerario").style.display = "none";
+    document.getElementById("map").style.display = "block";
+    document.getElementById("listaItinerario").innerHTML="";
 }
 
 /**
