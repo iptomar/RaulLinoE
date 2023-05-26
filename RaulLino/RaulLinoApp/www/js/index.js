@@ -176,6 +176,10 @@ function addMarkers() {
         });
 }
 
+/**
+ * Adiciona um edificio ao itinerário e guarda o array em localStorage
+ * @param {*} i 
+ */
 function addItinerario(i) {
     var add = true;
     for (let j = 0; j < itinerario.length; j++) {
@@ -189,6 +193,9 @@ function addItinerario(i) {
     }
 }
 
+/**
+ * Atualiza o array itinerarios com os dados guardados em localStorage
+ */
 function getItinerarios() {
     var aux = localStorage.getItem("itinerario").split('|');
     for (let i = 0; i < aux.length; i++) {
@@ -346,6 +353,9 @@ function ins_cart(num_column) {
         });
 }
 
+/**
+ * Gera o código HTML para a lista de edificios do itinerário
+ */
 function gerarListItenerario() {
     var codHTML = '<ul class="list-group shadow">';
     fetch("dados.json")
@@ -371,22 +381,24 @@ function gerarListItenerario() {
 
 }
 
+/**
+ * Remove um edificio da lista do itinerário
+ * @param {*} i 
+ */
 function removeItemIti(i) {
     itinerario.splice(i, 1);
     localStorage.setItem("itinerario", itinerario.join('|'));
     gerarListItenerario();
 }
 
+/**
+ * Faz mostrar a div da lista dos itinerarios e esconde a div do map
+ */
 function mostrarItinerario() {
     document.getElementById("botIt").style.display = "block";
     document.getElementById("map").style.display = "none";
-
     getItinerarios();
-    for (let i = 0; i < itinerario.length; i++) {
-        itinerario[i] = parseInt(itinerario[i]);
-    }
     gerarListItenerario();
-
 }
 
 /**
