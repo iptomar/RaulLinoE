@@ -212,6 +212,11 @@ button {
     padding: 13px;
 }
 
+.btn-close{
+    position: fixed;
+    right: 0;
+}
+
 /*
     ID's
 */
