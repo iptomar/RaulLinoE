@@ -72,7 +72,6 @@ function onLoadFotos() {
  * função chamada quando a página Mapa fica totalmente carregada
  */
 function onLoadMap() {
-    //document.getElementById("itinerario").style.display = "none";
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     curPag = "Map";
     getItinerarios();
@@ -418,10 +417,16 @@ function ver_window() {
     if (curPag == "Home") {
         var w = window.innerWidth;
         var h = window.innerHeight;
-        if (w >= h) document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + (h - 200) + 'px;" src="img/abrantes.jpg" class="img-fluid" />';
-        else document.getElementById("imagem_fundo").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px;"src="img/abrantes2.PNG" class="img-fluid" />';
+        if (w >= h) {
+            document.getElementById("paginainicial").innerHTML += '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover" src="img/abrantes.png" />';
+        }
+        else {
+            document.getElementById("paginainicial").innerHTML += '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover"src="img/abrantes1.png" />';
+        }
+
     }
 }
+
 
 //define o evento a ser executado quando se redimensiona o ecrâ
 window.addEventListener('resize', ver_window);
