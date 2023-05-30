@@ -33,6 +33,8 @@ var gpsMarker = false; //boolean que mostra se existe um marker da localização
 
 var idPag = -1;//index da página de um edificio a ser apresentada
 
+var itinerario = [];
+
 /**
  * função chamada quando o cordova esta pronto para correr do dispositivo do utilizador
  */
@@ -70,9 +72,10 @@ function onLoadFotos() {
  * função chamada quando a página Mapa fica totalmente carregada
  */
 function onLoadMap() {
-    document.getElementById("itinerario").style.display = "none";
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     curPag = "Map";
+    getItinerarios();
+    mostraMap();
 }
 
 /**
@@ -167,10 +170,37 @@ function addMarkers() {
             var i = 0;
             json.dados.forEach(element => {
                 L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                    .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><span>' + element.titulo + '</span><a href="pagina.html" style="cursor:pointer;"><img src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/> </a>' + '</div>')
+                    .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><a href="pagina.html" style="cursor:pointer;"><span>' + element.titulo + '</span></a><img onclick="addItinerario(' + i + ')" src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/></div>')
                 i++;
             });
         });
+}
+
+/**
+ * Adiciona um edificio ao itinerário e guarda o array em localStorage
+ * @param {*} i 
+ */
+function addItinerario(i) {
+    var add = true;
+    for (let j = 0; j < itinerario.length; j++) {
+        if (itinerario[j] == i) {
+            add = false;
+        }
+    }
+    if (add) {
+        itinerario.push(i);
+        localStorage.setItem("itinerario", itinerario.join('|'));
+    }
+}
+
+/**
+ * Atualiza o array itinerarios com os dados guardados em localStorage
+ */
+function getItinerarios() {
+    var aux = localStorage.getItem("itinerario").split('|');
+    for (let i = 0; i < aux.length; i++) {
+        itinerario[i] = parseInt(aux[i]);
+    }
 }
 
 /**
@@ -324,6 +354,63 @@ function ins_cart(num_column) {
 }
 
 /**
+ * Gera o código HTML para a lista de edificios do itinerário
+ */
+function gerarListItenerario() {
+    var codHTML = '<ul class="list-group shadow">';
+    fetch("dados.json")
+        .then(response => response.json())
+        .then(json => {
+            for (let i = 0; i < itinerario.length; i++) {
+                codHTML += '<li class="list-group-item">';
+                codHTML += '<div class="media align-items-lg-center flex-column flex-lg-row p-3">';
+                codHTML += '<div class="media-body order-2 order-lg-1">';
+                codHTML += '<h5 class="mt-0 font-weight-bold mb-2">' + json.dados[itinerario[i]].titulo + '</h5>';
+                codHTML += '<p class="font-italic text-muted mb-0 small">' + json.dados[itinerario[i]].info.substring(0, 100) + '</p>';
+                codHTML += '<img src="' + json.dados[itinerario[i]].imagens[0] + '" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2">';
+                codHTML += '<div class="d-flex align-items-center justify-content-between mt-1">';
+                codHTML += '<h6 class="font-weight-bold my-2"><button onClick="removeItemIti(' + i + ')">Remover</button></h6>';
+                codHTML += '</div>';
+                codHTML += '</div>';
+                codHTML += '</div></li>';
+
+            }
+            codHTML += '</ul>';
+            document.getElementById("listaItinerario").innerHTML = codHTML;
+        });
+
+}
+
+/**
+ * Remove um edificio da lista do itinerário
+ * @param {*} i 
+ */
+function removeItemIti(i) {
+    itinerario.splice(i, 1);
+    localStorage.setItem("itinerario", itinerario.join('|'));
+    gerarListItenerario();
+}
+
+/**
+ * Faz mostrar a div da lista dos itinerarios e esconde a div do map
+ */
+function mostrarItinerario() {
+    document.getElementById("itinerario").style.display = "block";
+    document.getElementById("map").style.display = "none";
+    getItinerarios();
+    gerarListItenerario();
+}
+
+/**
+ * Faz mostrar a div da map e esconde a div do lista dos itinerarios
+ */
+function mostraMap(){
+    document.getElementById("itinerario").style.display = "none";
+    document.getElementById("map").style.display = "block";
+    document.getElementById("listaItinerario").innerHTML="";
+}
+
+/**
  * função que seleciona a melhor imagem a ser apresentada de fundo na Home
  */
 function ver_window() {
@@ -336,6 +423,7 @@ function ver_window() {
         else {
             document.getElementById("paginainicial").innerHTML += '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover"src="img/abrantes1.png" />';
         }
+
     }
 }
 
