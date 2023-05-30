@@ -286,7 +286,11 @@
             "imagens": [
                 "img/roteiro/18/image7.jpeg"
             ]
-        },
+        }
+        
+    ],
+
+    "Informacoes": [
         {
             "id": 19,
             "nome": "Fernando Fuzeiro",
