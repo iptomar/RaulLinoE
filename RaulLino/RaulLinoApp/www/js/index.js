@@ -331,10 +331,10 @@ function ver_window() {
         var w = window.innerWidth;
         var h = window.innerHeight;
         if (w >= h) {
-            document.getElementById("paginainicial").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover" src="img/abrantes.png" />';
+            document.getElementById("paginainicial").innerHTML += '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover" src="img/abrantes.png" />';
         }
         else {
-            document.getElementById("paginainicial").innerHTML = '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover"src="img/abrantes1.png" />';
+            document.getElementById("paginainicial").innerHTML += '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover"src="img/abrantes1.png" />';
         }
     }
 }
