@@ -24,7 +24,7 @@
             <div class="subtitulo">RaulLino</div>
         </div>
         <div id="barraAmarela"></div>
-        <span style="font-family: RaulLino; font-size: larger;">mapa</span>
+        <span style="font-family: RaulLino; font-size: 25px;">mapa</span>
         <div class="custom-popup" id="map">
             <div id="zoomINOUT">
                 <div id="zoomIN">
@@ -51,25 +51,24 @@
                 </div>
                 <br>
                 <div id="botIt">
-                    <button class="localizacao-button" onclick="localizacaoAbrant()">
-                        <img src="img/mapa itinerário.svg"
-                            style="width: 70px; height: 70px; padding-bottom: 60%; padding-right: 60%;"></button>
+                    <button class="localizacao-button" onclick="mostrarItinerario()">
+                        <img src="img/mapa itinerário.svg" style="width: 70px; height: 70px; padding-bottom: 60%; padding-right: 60%;"></button>
+                </div>
+            </div>
+        </div>
+        <div id="itinerario" >
+            <div class="row" style="padding-bottom: 20px;">
+                <div class="col-lg-8 mx-auto">
+                    <button class="btn btn-dark btn-close"  onclick="mostraMap()"></button>
+                    <br>
+                    <div id="listaItinerario"></div>
                 </div>
             </div>
         </div>
     </div>
+    
 
-    <div id="itinerario" class="container py-5">
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <ul id="listaItinerario" class="list-group shadow">
-
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div id="navbar " class="bar">
+    <div id="navbar" class="bar">
         <ul class="nav justify-content-center">
             <li class="nav-item">
                 <a href="index.html" style="cursor:pointer;" class="nav-link active" aria-current="page"><img
