@@ -212,6 +212,11 @@ button {
     padding: 13px;
 }
 
+.btn-close {
+    position: fixed;
+    right: 0;
+}
+
 /*
     ID's
 */
@@ -345,6 +350,14 @@ button {
     border-radius: 10px;
     height: 4px;
     margin-bottom: 20px;
+}
+
+#paginainicial {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 /*
