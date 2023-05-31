@@ -201,6 +201,7 @@ function getItinerarios() {
     for (let i = 0; i < aux.length; i++) {
         itinerario[i] = parseInt(aux[i]);
     }
+
 }
 
 /**
@@ -425,7 +426,6 @@ function ver_window() {
         else {
             document.getElementById("paginainicial").innerHTML += '<img style="width:' + w + 'px;height:' + h + 'px; object-fit: cover"src="img/abrantes1.png" />';
         }
-
     }
 }
 
