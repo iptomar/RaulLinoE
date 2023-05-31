@@ -212,7 +212,8 @@ button {
     padding: 13px;
 }
 
-.btn-close {
+.btn-close{
+
     position: fixed;
     right: 0;
 }
