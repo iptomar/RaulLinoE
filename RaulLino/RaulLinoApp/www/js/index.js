@@ -197,12 +197,15 @@ function addItinerario(i) {
  * Atualiza o array itinerarios com os dados guardados em localStorage
  */
 function getItinerarios() {
-    var aux = localStorage.getItem("itinerario").split('|');
+    var storage = localStorage.getItem("itinerario");
+    if(storage == null) return;
+    var aux = aux.split('|');
     for (let i = 0; i < aux.length; i++) {
         itinerario[i] = parseInt(aux[i]);
     }
 
 }
+
 
 /**
  * função chamado quando o mapa é carregado e quando o dispostivo não encontrar a localização do utilizador
