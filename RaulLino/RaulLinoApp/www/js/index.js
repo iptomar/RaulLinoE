@@ -421,9 +421,13 @@ function ver_window() {
         var w = window.innerWidth;
         var h = window.innerHeight;
         if (w >= h) {
+            // vertical
             document.getElementById("paginainicial").style.backgroundImage = "url(../img/abrantes.png)";
+            document.getElementById("linguas").style.left = "83%"
+            document.getElementById("linguas").style.top = "-32%"
         }
         else {
+            // horizontal
             document.getElementById("paginainicial").style.backgroundImage = "url(../img/abrantes1.png)";
         }
     }

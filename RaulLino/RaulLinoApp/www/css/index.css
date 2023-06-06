@@ -218,6 +218,23 @@ button {
     right: 0;
 }
 
+#linguas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 30%;
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+#linguas img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    padding: 20px;
+}
+
 /*
     ID's
 */
@@ -504,6 +521,53 @@ html {
 }
 
 .btn-three:hover::after {
+    opacity: 1;
+    transform: scale(1, 1);
+
+}
+
+.btn-one {
+    color: #FFF !important;
+    transition: all 0.5s;
+    position: relative;
+    border: none !important;
+    font-size: 25px !important;
+}
+
+.btn-one::before {
+    content: '';
+    position: absolute;
+    top: 22%;
+    left: 25%;
+    width: 62px;
+    height: 62px;
+    z-index: 1;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+    border-radius: 100%;
+}
+
+.btn-one:hover::before {
+    opacity: 0;
+    transform: scale(0.5, 0.5);
+}
+
+.btn-one::after {
+    content: '';
+    position: absolute;
+    top: 23%;
+    left: 25%;
+    width: 62px;
+    height: 62px;
+    z-index: 1;
+    opacity: 0;
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.795);
+    transform: scale(1.2, 1.2);
+    border-radius: 100%;
+}
+
+.btn-one:hover::after {
     opacity: 1;
     transform: scale(1, 1);
 
