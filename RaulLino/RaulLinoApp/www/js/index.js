@@ -32,10 +32,9 @@ var userMarker;//referencia para o marcardor da localização do utilizador
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
 var idPag = -1;//index da página de um edificio a ser apresentada
-
+var lang =0 ;//flag para a linguagem a ser apresentada
 var itinerario = [];
 
-var lang = 0;
 
 /**
  * função chamada quando o cordova esta pronto para correr do dispositivo do utilizador
@@ -330,7 +329,7 @@ function idPagVer(i) {
  * @param {*} num_column 
  */
 function ins_cart(num_column) {
-    fetch("dados.json")
+    fetch(fileData())
         .then(response => response.json())
         .then(json => {
             let str_ins = '<div class="card-group">';
@@ -364,7 +363,7 @@ function ins_cart(num_column) {
  */
 function gerarListItenerario() {
     var codHTML = '<ul class="list-group shadow">';
-    fetch("dados.json")
+    fetch(fileData())
         .then(response => response.json())
         .then(json => {
             for (let i = 0; i < itinerario.length; i++) {
@@ -372,7 +371,7 @@ function gerarListItenerario() {
                 codHTML += '<div class="media align-items-lg-center flex-column flex-lg-row p-3">';
                 codHTML += '<div class="media-body order-2 order-lg-1">';
                 codHTML += '<h5 class="mt-0 font-weight-bold mb-2">' + json.dados[itinerario[i]].titulo + '</h5>';
-                codHTML += '<p class="font-italic text-muted mb-0 small">' + json.dados[itinerario[i]].info.substring(0, 100)+"..." + '</p>';
+                codHTML += '<p class="font-italic text-muted mb-0 small">' + json.dados[itinerario[i]].info.substring(0, 100) + "..." + '</p>';
                 codHTML += '<img src="' + json.dados[itinerario[i]].imagens[0] + '" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2">';
                 codHTML += '<div class="d-flex align-items-center justify-content-between mt-1">';
                 codHTML += '<h6 class="font-weight-bold my-2"><button class="btn btn-danger" onClick="removeItemIti(' + i + ')">Remover</button></h6>';
@@ -411,10 +410,10 @@ function mostrarItinerario() {
 /**
  * Faz mostrar a div da map e esconde a div do lista dos itinerarios
  */
-function mostraMap(){
+function mostraMap() {
     document.getElementById("itinerario").style.display = "none";
     document.getElementById("map").style.display = "block";
-    document.getElementById("listaItinerario").innerHTML="";
+    document.getElementById("listaItinerario").innerHTML = "";
     document.getElementById("navbar").style.display = "block";
 }
 
@@ -423,6 +422,7 @@ function mostraMap(){
  */
 function langPT(){
     lang = 0;
+    mostrarTexto();
 }
 
 /**
@@ -430,6 +430,7 @@ function langPT(){
  */
 function langEN(){
     lang = 1;
+    mostrarTexto();
 }
 
 /**
@@ -461,3 +462,52 @@ document.addEventListener('deviceready', onDeviceReady, false);
 
 //faz uma chamada a função "getLocation()" a cada 1s
 setInterval(getLocation, 1000);
+
+//função que importa o texto do ficheiro json
+function mostrarTexto() {
+    fetch("dados.json")
+        .then(response => response.json())
+        .then(data => {
+            getStudents(data.Informacoes.slice(0, 5));
+            ////////////////
+            document.getElementById("titulo1").innerHTML = data.Informacoes[14].titulo;
+            document.getElementById("subtitulo1").innerHTML = data.Informacoes[14].subtitulo;
+            document.getElementById("btnExplore").innerHTML = data.Informacoes[13].titulo;
+            document.getElementById("btnAbout").innerHTML = data.Informacoes[13].subtitulo;
+            document.getElementById("tituloF").innerHTML = data.Informacoes[9].titulo;
+            document.getElementById("subtituloF").innerHTML = data.Informacoes[9].subtitulo;
+
+
+        })
+}
+
+function getStudents(data) {
+    const imageElements = document.querySelectorAll(".column img");
+    const h2Elements = document.querySelectorAll(".column h2");
+    const p1Elements = document.querySelectorAll(".column .title");
+    const p2Elements = document.querySelectorAll(".column #email");
+
+    
+    for (let index = 0; index < 5; index++) {
+        if (index < imageElements.length) {
+            const student = data[index];
+
+            imageElements[index].src = student.imagens[0];
+            imageElements[index].alt = student.nome;
+
+            h2Elements[index].textContent = student.nome;
+            p1Elements[index].textContent = "Nº " + student.numero;
+            p2Elements[index].textContent = student.email;
+        }
+    }
+}
+
+function fileData() {
+    if (lang == 0) {
+        return "dados.json"
+    } else {
+        return "dados_ingles.json"
+    }
+}
+
+mostrarTexto();
