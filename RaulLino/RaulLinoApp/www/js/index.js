@@ -35,6 +35,8 @@ var idPag = -1;//index da página de um edificio a ser apresentada
 
 var itinerario = [];
 
+var lang = 0;
+
 /**
  * função chamada quando o cordova esta pronto para correr do dispositivo do utilizador
  */
@@ -197,12 +199,15 @@ function addItinerario(i) {
  * Atualiza o array itinerarios com os dados guardados em localStorage
  */
 function getItinerarios() {
-    var aux = localStorage.getItem("itinerario").split('|');
+    var storage = localStorage.getItem("itinerario");
+    if(storage == null) return;
+    var aux = aux.split('|');
     for (let i = 0; i < aux.length; i++) {
         itinerario[i] = parseInt(aux[i]);
     }
 
 }
+
 
 /**
  * função chamado quando o mapa é carregado e quando o dispostivo não encontrar a localização do utilizador
@@ -414,6 +419,20 @@ function mostraMap(){
 }
 
 /**
+ * Ação para alterar a flag lang para 0, ou seja para português
+ */
+function langPT(){
+    lang = 0;
+}
+
+/**
+ * Ação para alterar a flag lang para 1, ou seja para ingles
+ */
+function langEN(){
+    lang = 1;
+}
+
+/**
  * função que seleciona a melhor imagem a ser apresentada de fundo na Home
  */
 function ver_window() {
@@ -421,9 +440,13 @@ function ver_window() {
         var w = window.innerWidth;
         var h = window.innerHeight;
         if (w >= h) {
+            // vertical
             document.getElementById("paginainicial").style.backgroundImage = "url(../img/abrantes.png)";
+            document.getElementById("linguas").style.left = "83%"
+            document.getElementById("linguas").style.top = "-32%"
         }
         else {
+            // horizontal
             document.getElementById("paginainicial").style.backgroundImage = "url(../img/abrantes1.png)";
         }
     }
