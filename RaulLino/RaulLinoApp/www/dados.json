@@ -364,11 +364,22 @@
         {
             "id": 30,
             "titulo": "Itinerario",
-            "subtitulo": "RaulLino"
+            "subtitulo": "RaulLino",
+            "subsubtitulo": "mapa"
         },
         {
             "id": 31,
             "titulo": "Edificios",
+            "subtitulo": "RaulLino"
+        },
+        {
+            "id": 32,
+            "titulo": "Explorar",
+            "subtitulo": "Sobre"
+        },
+        {
+            "id": 33,
+            "titulo": "Abrantes",
             "subtitulo": "RaulLino"
         }
     ]
