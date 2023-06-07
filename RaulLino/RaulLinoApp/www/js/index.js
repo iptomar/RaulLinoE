@@ -35,6 +35,8 @@ var idPag = -1;//index da página de um edificio a ser apresentada
 
 var itinerario = [];
 
+var lang = 0;
+
 /**
  * função chamada quando o cordova esta pronto para correr do dispositivo do utilizador
  */
@@ -414,6 +416,20 @@ function mostraMap(){
     document.getElementById("map").style.display = "block";
     document.getElementById("listaItinerario").innerHTML="";
     document.getElementById("navbar").style.display = "block";
+}
+
+/**
+ * Ação para alterar a flag lang para 0, ou seja para português
+ */
+function langPT(){
+    lang = 0;
+}
+
+/**
+ * Ação para alterar a flag lang para 1, ou seja para ingles
+ */
+function langEN(){
+    lang = 1;
 }
 
 /**
