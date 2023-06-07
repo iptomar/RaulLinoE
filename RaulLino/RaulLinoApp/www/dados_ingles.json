@@ -1,5 +1,5 @@
 {
-    "dados_ingles": [
+    "dados": [
         {
             "id": 1,
             "titulo": "Rua Luís de Camões",
@@ -288,7 +288,7 @@
             ]
         }
     ],
-    "Information":[
+    "Informacoes": [
         {
             "id": 19,
             "nome": "Fernando Fuzeiro",
@@ -362,11 +362,22 @@
         {
             "id": 30,
             "titulo": "Itinerary",
-            "subtitulo": "RaulLino"
+            "subtitulo": "RaulLino",
+            "subsubtitulo": "map"
         },
         {
             "id": 31,
             "titulo": "Buildings",
+            "subtitulo": "RaulLino"
+        },
+        {
+            "id": 32,
+            "titulo": "Explore",
+            "subtitulo": "About"
+        },
+        {
+            "id": 33,
+            "titulo": "Abrantes",
             "subtitulo": "RaulLino"
         }
     ]

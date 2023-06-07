@@ -32,8 +32,9 @@ var userMarker;//referencia para o marcardor da localização do utilizador
 var gpsMarker = false; //boolean que mostra se existe um marker da localização do utilizador
 
 var idPag = -1;//index da página de um edificio a ser apresentada
-var lang =0 ;//flag para a linguagem a ser apresentada
+var lang = 0;//flag para a linguagem a ser apresentada
 var itinerario = [];
+
 
 
 /**
@@ -65,7 +66,10 @@ function onDeviceReady() {
  */
 function onLoadFotos() {
     var w = window.innerWidth;
+    localStorage.getItem("lang") == null ? lang = 0 : lang = localStorage.getItem("lang");
+    mostrarTextoFotos();
     ins_cart(parseInt(w / 350) > 3 ? 3 : parseInt(w / 350));
+
     curPag = "Fotos";
 }
 
@@ -75,6 +79,8 @@ function onLoadFotos() {
 function onLoadMap() {
     navigator.geolocation.getCurrentPosition(onGPSSuccess, onGPSError);
     curPag = "Map";
+    localStorage.getItem("lang") == null ? lang = 0 : lang = localStorage.getItem("lang");
+    mostrarTextoMapa();
     getItinerarios();
     mostraMap();
 }
@@ -85,6 +91,9 @@ function onLoadMap() {
 function onLoadHome() {
     curPag = "Home";
     ver_window();
+    localStorage.getItem("lang") == null ? lang = 0 : lang = localStorage.getItem("lang");
+    mostrarTextoHome();
+
 }
 
 /**
@@ -93,28 +102,32 @@ function onLoadHome() {
 function onLoadPagina() {
     curPag = "Pagina";
     idPag = getCookie("idPag");
-    fetch("dados.json")
+    localStorage.getItem("lang") == null ? lang = 0 : lang = localStorage.getItem("lang");
+    fetch(fileData())
         .then(response => response.json())
         .then(json => {
 
             var carr =
                 '<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">' +
                 '<div class="carousel-inner">';
-            json.dados[idPag].imagens.forEach(element => {
-                carr += '<center><div class="carousel-item active" ><img  style="max-width:1000px; max-height:800px;" src="' + element + '" class="d-block w-100" ></div></center>'
+            json.dados[idPag].imagens.forEach((element, index) => {
+                if (index === 0) {
+                    carr += '<center><div class="carousel-item active"><img style="max-width:1000px; max-height:800px;" src="' + element + '" class="d-block w-100"></div></center>';
+                } else {
+                    carr += '<center><div class="carousel-item"><img style="max-width:1000px; max-height:800px;" src="' + element + '" class="d-block w-100"></div></center>';
+                }
             });
             carr += '</div>' +
-                '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"' +
-                'data-bs-slide="prev">' +
+                '<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">' +
                 '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
                 '<span class="visually-hidden">Previous</span>' +
                 '</button>' +
-                '<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"' +
-                'data-bs-slide="next">' +
+                '<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">' +
                 '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
                 '<span class="visually-hidden">Next</span>' +
                 '</button>' +
                 '</div>';
+
 
             document.getElementById("carImag").innerHTML = carr;
 
@@ -123,6 +136,8 @@ function onLoadPagina() {
             document.getElementById("pagina_localizacao").textContent = json.dados[idPag].localizacao;
             document.getElementById("pagina_tipologia").textContent = json.dados[idPag].tipologia;
             document.getElementById("pagina_informacao").textContent = json.dados[idPag].info;
+            document.getElementById("tituloP").textContent = json.Informacoes[12].titulo;
+            document.getElementById("subtituloP").textContent = json.Informacoes[12].subtitulo;
         });
 }
 
@@ -131,6 +146,16 @@ function onLoadPagina() {
  */
 function onLoad() {
     curPag = "none";
+}
+
+function onLoadAbout() {
+    localStorage.getItem("lang") == null ? lang = 0 : lang = localStorage.getItem("lang");
+    mostrarTextoAbout();
+}
+
+function onLoadRaulino() {
+    localStorage.getItem("lang") == null ? lang = 0 : lang = localStorage.getItem("lang");
+    mostrarTextoRaulino();
 }
 
 /**
@@ -171,7 +196,7 @@ function addMarkers() {
             var i = 0;
             json.dados.forEach(element => {
                 L.marker([element.coordenadas[0], element.coordenadas[1]], { icon: greenIcon }).addTo(map)
-                    .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><a href="pagina.html" style="cursor:pointer;"><span>' + element.titulo + '</span></a><img onclick="addItinerario(' + i + ')" src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/></div>')
+                    .bindPopup('<div onMouseOver="idPagVer(' + i + ');" style="display: flex; align-items: center;"><a href="pagina.html" style="cursor:pointer;text-decoration: none;color:white;"><span>' + element.titulo + '</span></a><img onclick="addItinerario(' + i + ')" src="../img/mais_preto.svg" width="50px" style="margin-left:auto;"/></div>')
                 i++;
             });
         });
@@ -199,8 +224,8 @@ function addItinerario(i) {
  */
 function getItinerarios() {
     var storage = localStorage.getItem("itinerario");
-    if(storage == null) return;
-    var aux = aux.split('|');
+    if (storage == null) return;
+    var aux = storage.split('|');
     for (let i = 0; i < aux.length; i++) {
         itinerario[i] = parseInt(aux[i]);
     }
@@ -420,17 +445,19 @@ function mostraMap() {
 /**
  * Ação para alterar a flag lang para 0, ou seja para português
  */
-function langPT(){
+function langPT() {
+    localStorage.setItem("lang", 0);
     lang = 0;
-    mostrarTexto();
+    mostrarTextoHome();
 }
 
 /**
  * Ação para alterar a flag lang para 1, ou seja para ingles
  */
-function langEN(){
+function langEN() {
+    localStorage.setItem("lang", 1);
     lang = 1;
-    mostrarTexto();
+    mostrarTextoHome();
 }
 
 /**
@@ -463,23 +490,6 @@ document.addEventListener('deviceready', onDeviceReady, false);
 //faz uma chamada a função "getLocation()" a cada 1s
 setInterval(getLocation, 1000);
 
-//função que importa o texto do ficheiro json
-function mostrarTexto() {
-    fetch("dados.json")
-        .then(response => response.json())
-        .then(data => {
-            getStudents(data.Informacoes.slice(0, 5));
-            ////////////////
-            document.getElementById("titulo1").innerHTML = data.Informacoes[14].titulo;
-            document.getElementById("subtitulo1").innerHTML = data.Informacoes[14].subtitulo;
-            document.getElementById("btnExplore").innerHTML = data.Informacoes[13].titulo;
-            document.getElementById("btnAbout").innerHTML = data.Informacoes[13].subtitulo;
-            document.getElementById("tituloF").innerHTML = data.Informacoes[9].titulo;
-            document.getElementById("subtituloF").innerHTML = data.Informacoes[9].subtitulo;
-
-
-        })
-}
 
 function getStudents(data) {
     const imageElements = document.querySelectorAll(".column img");
@@ -487,7 +497,7 @@ function getStudents(data) {
     const p1Elements = document.querySelectorAll(".column .title");
     const p2Elements = document.querySelectorAll(".column #email");
 
-    
+
     for (let index = 0; index < 5; index++) {
         if (index < imageElements.length) {
             const student = data[index];
@@ -501,6 +511,62 @@ function getStudents(data) {
         }
     }
 }
+//função que importa o texto do ficheiro json
+function mostrarTextoAbout() {
+    fetch(fileData())
+        .then(response => response.json())
+        .then(data => {
+            getStudents(data.Informacoes.slice(0, 5));
+            document.getElementById("p1").textContent = data.Informacoes[5].nome;
+            document.getElementById("p2").textContent = data.Informacoes[6].nome;
+            document.getElementById("p3").textContent = data.Informacoes[7].nome;
+        })
+}
+
+function mostrarTextoFotos() {
+    fetch(fileData())
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("tituloF").innerHTML = data.Informacoes[10].titulo;
+            document.getElementById("subtituloF").innerHTML = data.Informacoes[10].subtitulo;
+        })
+}
+
+function mostrarTextoHome() {
+    fetch(fileData())
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("titulo1").innerHTML = data.Informacoes[14].titulo;
+            document.getElementById("subtitulo1").innerHTML = data.Informacoes[14].subtitulo;
+            document.getElementById("btnExplore").innerHTML = data.Informacoes[13].titulo;
+            document.getElementById("btnAbout").innerHTML = data.Informacoes[13].subtitulo;
+        })
+
+}
+
+function mostrarTextoMapa() {
+    fetch(fileData())
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("tituloM").innerHTML = data.Informacoes[11].titulo;
+            document.getElementById("subtituloM").innerHTML = data.Informacoes[11].subtitulo;
+            document.getElementById("subsubtitulo").innerHTML = data.Informacoes[11].subsubtitulo;
+        })
+}
+
+function mostrarTextoRaulino() {
+    fetch(fileData())
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("tituloR").innerHTML = data.Informacoes[11].titulo;
+            document.getElementById("subtituloR").innerHTML = data.Informacoes[11].subtitulo;
+            document.getElementById("pr1").innerHTML = data.Informacoes[8].nome;
+            document.getElementById("pr2").innerHTML = data.Informacoes[9].nome;
+        })
+}
+
+
+
 
 function fileData() {
     if (lang == 0) {
@@ -510,4 +576,4 @@ function fileData() {
     }
 }
 
-mostrarTexto();
+
