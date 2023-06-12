@@ -11,7 +11,7 @@
     
     <platform name="android">
         <preference name = "SplashScreen" value = "screen" />
-        <preference name = "SplashScreenDelay" value = "200" />
+        <preference name = "SplashScreenDelay" value = "2000" />
         <preference name = "SplashMaintainAspectRatio" value = "false" />
 
         <splash src="www/img/RaulLinoLogo.png" density="hdpi"/>
@@ -40,12 +40,8 @@
         <icon src="www/img/logo.png" density="xhdpi"/>
     
     </platform>
-
-     <platform name="windows">
-        <splash src="www/img/RaulLinoLogo.png" target="SplashScreen"/>
-        <splash src="www/img/RaulLinoLogo.png" target="SplashScreenPhone"/>
-    </platform>
     
-    <preference name="SplashScreenDelay" value="200" />
+    <preference name="SplashScreenDelay" value="2000" />
 
 </widget>
+
