@@ -397,7 +397,7 @@ function gerarListItenerario() {
                 codHTML += '<div class="media-body order-2 order-lg-1">';
                 codHTML += '<h5 class="mt-0 font-weight-bold mb-2">' + json.dados[itinerario[i]].titulo + '</h5>';
                 codHTML += '<p class="font-italic text-muted mb-0 small">' + json.dados[itinerario[i]].info.substring(0, 100) + "..." + '</p>';
-                codHTML += '<img src="' + json.dados[itinerario[i]].imagens[0] + '" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2">';
+                codHTML += '<a href="pagina.html"><img onMouseOver="idPagVer(' + itinerario[i] + ');" src="' + json.dados[itinerario[i]].imagens[0] + '" alt="Generic placeholder image" width="200" class="ml-lg-5 order-1 order-lg-2"></a>';
                 codHTML += '<div class="d-flex align-items-center justify-content-between mt-1">';
                 codHTML += '<h6 class="font-weight-bold my-2"><button class="btn btn-danger" onClick="removeItemIti(' + i + ')">Remover</button></h6>';
                 codHTML += '</div>';
